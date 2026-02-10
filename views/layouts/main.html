@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full bg-gray-50 antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WollFind - Micro SaaS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none !important; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontSize: {
+                        xs: '0.75rem',
+                        sm: '0.875rem',
+                        base: '1rem',
+                        lg: '1.125rem',
+                        xl: '1.25rem',
+                        '2xl': '1.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex flex-col h-full text-sm text-gray-700">
+    <!-- Navbar Compacta -->
+    <nav class="bg-white border-b border-gray-200 shrink-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-14">
+                <div class="flex items-center gap-6">
+                    <a href="/" class="flex items-center gap-2 hover:opacity-80 transition">
+                        <div class="bg-indigo-600 text-white p-1 rounded">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <span class="text-lg font-bold text-gray-900 tracking-tight">WollFind</span>
+                    </a>
+                    
+                    {{if .UserEmail}}
+                    <div class="hidden md:flex items-center gap-1">
+                        <a href="/dashboard" class="px-3 py-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-50 font-medium transition {{if eq .Path "/dashboard"}}bg-gray-50 text-indigo-600{{end}}">Painel</a>
+                        <a href="/chat" class="px-3 py-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-50 font-medium transition {{if eq .Path "/chat"}}bg-gray-50 text-indigo-600{{end}}">Chat</a>
+                    </div>
+                    {{end}}
+                </div>
+
+                <div class="flex items-center gap-3">
+                    {{if .UserEmail}}
+                        <div class="hidden sm:flex flex-col items-end mr-2">
+                            <span class="text-xs font-medium text-gray-700">{{.UserEmail}}</span>
+                        </div>
+                        <a href="/logout" class="text-gray-500 hover:text-red-600 text-xs font-medium border border-gray-200 px-3 py-1.5 rounded hover:bg-red-50 transition">Sair</a>
+                    {{else}}
+                        <a href="/login" class="text-gray-600 hover:text-indigo-600 font-medium px-3 py-1.5 transition">Entrar</a>
+                        <a href="/register" class="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-1.5 rounded-md font-medium shadow-sm transition">Criar Conta</a>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow bg-gray-50 w-full">
+        {{embed}}
+    </main>
+
+    <!-- Footer Simplificado -->
+    <footer class="bg-white border-t border-gray-200 py-4 shrink-0">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-xs text-gray-400">© 2026 WollFind Micro-SaaS. Alta performance.</p>
+        </div>
+    </footer>
+</body>
+</html>

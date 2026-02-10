@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    container_name: woll-find-app
+    restart: unless-stopped
+    environment:
+      - DB_PATH=/app/database/wollfind.db
+    volumes:
+      - sqlite_data:/app/database
+      - uploads_data:/app/public/uploads
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
+
+  caddy:
+    image: caddy:latest
+    container_name: woll-find-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  sqlite_data:
+  uploads_data:
+  caddy_data:
+  caddy_config:

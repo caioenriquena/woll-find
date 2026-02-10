@@ -1,0 +1,4 @@
+# Substitua 'localhost' pelo seu domínio real em produção (ex: wollfind.com)
+localhost {
+    reverse_proxy app:3000
+}

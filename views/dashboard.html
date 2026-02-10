@@ -1,0 +1,78 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Header & Action -->
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Painel de Controle</h1>
+        
+        <form action="/folder" method="POST" class="flex w-full sm:w-auto gap-2">
+            <input type="text" name="name" placeholder="Nova pasta..." class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none" required>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-indigo-700 transition shadow-sm whitespace-nowrap">
+                + Criar
+            </button>
+        </form>
+    </div>
+
+    <!-- Stats Row (Compact) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase">Pastas</p>
+                <p class="text-2xl font-semibold text-gray-900">{{len .Folders}}</p>
+            </div>
+            <div class="p-2 bg-indigo-50 text-indigo-600 rounded-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase">Status</p>
+                <p class="text-lg font-semibold text-green-600">Ativo</p>
+            </div>
+            <div class="p-2 bg-green-50 text-green-600 rounded-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase">Modo</p>
+                <p class="text-lg font-semibold text-purple-600">WAL / FTS5</p>
+            </div>
+            <div class="p-2 bg-purple-50 text-purple-600 rounded-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Folders Grid -->
+    <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-medium text-gray-900">Suas Pastas</h2>
+    </div>
+
+    {{if .Folders}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {{range .Folders}}
+        <div class="group bg-white rounded-lg border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200 relative">
+            <a href="/folder/{{.ID}}" class="block p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <svg class="w-8 h-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+                    <span class="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{{len .Files}} arq</span>
+                </div>
+                <h3 class="text-sm font-semibold text-gray-900 truncate mb-1" title="{{.Name}}">{{.Name}}</h3>
+                <p class="text-xs text-gray-500">{{.CreatedAt.Format "02/01/2006"}}</p>
+            </a>
+            
+            <form action="/folder/{{.ID}}/delete" method="POST" class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity" onsubmit="return confirm('Excluir esta pasta?');">
+                <button type="submit" class="text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50" title="Excluir">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+            </form>
+        </div>
+        {{end}}
+    </div>
+    {{else}}
+    <div class="text-center py-12 bg-white rounded-lg border-2 border-dashed border-gray-200">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhuma pasta</h3>
+        <p class="mt-1 text-sm text-gray-500">Comece criando uma pasta acima.</p>
+    </div>
+    {{end}}
+</div>
